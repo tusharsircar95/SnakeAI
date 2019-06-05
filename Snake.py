@@ -3,7 +3,7 @@ class Snake:
         origin = int(grid.shape[0]/2)
         self.direction = 'R'
         self.blobs = []
-        for i in range(3):
+        for i in range(4):
             self.blobs.append((origin-i,origin))
         self.trail = None
 
@@ -22,16 +22,16 @@ class Snake:
 
     def didCollide( self, headBlob, grid ):
         if headBlob[0] < 0 or headBlob[0] >= grid.shape[0]:
-            print('Side wall collission')
+            #print('Side wall collission')
             return True
         if headBlob[1] < 0 or headBlob[1] >= grid.shape[1]:
-            print ( 'TopBottom wall collission' )
+            #print ( 'TopBottom wall collission' )
             return True
-        if grid[ headBlob[ 0 ] ][ headBlob[ 1 ] ] == 1:
-            print ( 'Self collission' )
+        #if grid[ headBlob[ 0 ] ][ headBlob[ 1 ] ] == 1:
+            #print ( 'Self collission' )
         return grid[ headBlob[ 0 ] ][ headBlob[ 1 ] ] == 1
 
-    def move( self, food, grid, score ):
+    def move( self, food, grid ):
         headBlob = self.blobs[ 0 ]
         if self.direction == 'U':
             headBlob = (headBlob[ 0 ] , headBlob[ 1 ] - 1)
@@ -48,15 +48,16 @@ class Snake:
 
             grid[ self.trail[ 0 ] ][ self.trail[ 1 ] ] = 0
             grid[ headBlob[0] ][ headBlob[1] ] = 1
+            got_food = False
             if headBlob[0] == food.x and headBlob[1] == food.y:
                 self.grow()
-                score = score + 1
+                got_food = True
                 grid[ self.trail[ 0 ] ][ self.trail[ 1 ] ] = 1
                 food.relocate(grid)
-            return food,grid,"ALIVE",score
+            return food,grid,"ALIVE",got_food
         else:
-            print('Collission:',headBlob,self.blobs[0])
-            return None,grid,"DEAD", score
+            #print('Collission')
+            return None,grid,"DEAD",False
 
     def setDirection( self, direction ):
         self.direction = direction

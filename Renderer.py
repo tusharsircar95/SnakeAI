@@ -21,6 +21,11 @@ class Renderer:
                            pygame.Rect ( food.x * self.GRID_SQ , food.y * self.GRID_SQ ,
                                          self.GRID_SQ , self.GRID_SQ ) )
 
+    def render_obstacles(self,screen,obstacles):
+        for obstacle in obstacles:
+            pygame.draw.rect(screen, (255, 0, 0),
+                             pygame.Rect(obstacle[0] * self.GRID_SQ, obstacle[1] * self.GRID_SQ,
+                                         self.GRID_SQ, self.GRID_SQ))
     def render_game_over( self, screen, text ):
         screen.blit ( text ,
                       ( (self.SCREEN_DIMS[ 0 ] * self.GRID_SQ / 2 - text.get_width () // 2) ,
