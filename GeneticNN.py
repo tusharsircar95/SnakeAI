@@ -16,6 +16,7 @@ class GeneticNN:
         self.elite_parents = elite_parents
         self.best_individual = None
         self.best_fitness = 0
+        self.best_fitness_points = 0
         # def to_features(snake,food,grid):
         #     return np.random.random([self.layers[0],1])
         # self.to_features = to_features
@@ -67,7 +68,7 @@ class GeneticNN:
                     activation = 1.0 / (1.0 + np.exp(-activation))
             assert(offset == len(self.create_individual()))
             decision = np.argmax(activation)
-            return ['U','D','L','R'][decision]
+            #return ['U','D','L','R'][decision]
             #print(activation.reshape(1, -1))
             if decision == 0:
                 return snake.direction
@@ -92,12 +93,13 @@ class GeneticNN:
 
         return controller
 
-    def calculate_fitness(self,individual):
+    def calculate_fitness(self,n,index,individual):
         controller = self.convert_individual_to_game_controller(individual)
-        game.set_controller(controller)
-        fitness = game.play()
+        self.game.set_controller(controller)
+        fitness, points = self.game.play(gnn_info={'gen':n,'n':index,'best_fitness':self.best_fitness,'best_fitness_points':self.best_fitness_points})
         if fitness > self.best_fitness:
             self.best_fitness = fitness
+            self.best_fitness_points = points
             self.best_individual = individual
         return fitness
 
@@ -135,6 +137,6 @@ class GeneticNN:
         self.best_fitness = 0
         for n in range(self.generations):
             prev_generation = self.next_generation(prev_generation,fitness)
-            fitness = np.array([1.0 + self.calculate_fitness(individual) for individual in prev_generation])
+            fitness = np.array([1.0 + self.calculate_fitness(n,index,individual) for index,individual in enumerate(prev_generation)])
             #print('fitness',fitness)
             print("Generation %d\nBest Fitness: %d\n"%(n,np.max(fitness)))

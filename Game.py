@@ -9,21 +9,26 @@ from SnakeAI.Renderer import Renderer
 
 class Game:
 
-    def __init__(self,SCREEN_DIMS=(40,40),GRID_SQ=20,CONTROLLER=None,auto_start=False):
+    def __init__(self,PLAYAREA_DIMS=(40,40),BORDER_DIMS=(1,3,1,1),GRID_SQ=20,CONTROLLER=None,auto_start=False,n_obstacles=0):
         pygame.init()
-        self.SCREEN_DIMS = SCREEN_DIMS
+        self.PLAYAREA_DIMS = PLAYAREA_DIMS
+        self.BORDER_DIMS = BORDER_DIMS
+        self.SCREEN_DIMS = (self.PLAYAREA_DIMS[0]+BORDER_DIMS[0]+BORDER_DIMS[2], self.PLAYAREA_DIMS[1]+BORDER_DIMS[1]+BORDER_DIMS[3])
         self.GRID_SQ = GRID_SQ
-        self.GRID = np.zeros(SCREEN_DIMS)
-        self.SCORE = 0
+        self.GRID = np.zeros(PLAYAREA_DIMS)
+        self.FITNESS = 0
+        self.FOODS_EATEN = 0
         self.STATE = "NOT_STARTED"
         self.SNAKE = Snake(self.GRID)
         self.FOOD = Food()
         self.FOOD.relocate(self.GRID)
         self.CONTROLLER = CONTROLLER
-        self.FONT = pygame.font.SysFont("comicsansms", 30)
+        self.FONT = pygame.font.SysFont("comicsansms", 22)
         self.GRID = self.SNAKE.updateGrid(self.GRID)
         self.auto_start = auto_start
         self.obstacles = []
+        self.n_obstacles = n_obstacles
+        self.gnn_info = {}
 
     def setObstacles(self,n):
         self.obstacles = []
@@ -31,27 +36,30 @@ class Game:
             x = self.SNAKE.blobs[0][0]
             y = self.SNAKE.blobs[0][1]
             while self.GRID[x][y] != 0:
-                x = np.random.randint(self.SCREEN_DIMS[0])
-                y = np.random.randint(self.SCREEN_DIMS[1])
+                x = np.random.randint(self.PLAYAREA_DIMS[0])
+                y = np.random.randint(self.PLAYAREA_DIMS[1])
             self.GRID[x][y] = 1.0
             self.obstacles.append((x,y))
 
     def reset_game(self):
-        self.GRID = np.zeros(self.SCREEN_DIMS)
-        self.SCORE = 0
+        self.GRID = np.zeros(self.PLAYAREA_DIMS)
+        self.FITNESS = 0
+        self.FOODS_EATEN = 0
         self.STATE = "NOT_STARTED"
         self.SNAKE = Snake(self.GRID)
         self.FOOD = Food()
         self.FOOD.relocate(self.GRID)
         self.GRID = self.SNAKE.updateGrid(self.GRID)
-        self.setObstacles(10)
+        self.setObstacles(self.n_obstacles)
 
     def set_controller(self,controller):
         self.CONTROLLER = controller
 
-    def play(self,auto_start=False):
+    def play(self,gnn_info={}):
         self.reset_game()
+        self.gnn_info = gnn_info
         renderer = Renderer(SCREEN_DIMS=self.SCREEN_DIMS,
+                            BORDERS=self.BORDER_DIMS,
                             GRID_SQ=self.GRID_SQ,
                             FONT=self.FONT)
 
@@ -105,15 +113,17 @@ class Game:
 
             # Graphics rendering
             screen.fill((0, 0, 0))
+            renderer.render_borders(screen)
             renderer.render_snake(screen, self.SNAKE)
             renderer.render_food(screen, self.FOOD)
-            renderer.render_score(screen, self.SCORE)
+            renderer.render_score(screen, self.FITNESS, self.FOODS_EATEN)
+            renderer.render_gnn_info(screen, self.gnn_info)
             renderer.render_obstacles(screen,self.obstacles)
             if self.STATE == "DEAD":
                 renderer.render_game_over(screen, text_gameover)
-                self.SCORE = self.SCORE - 20
+                self.FITNESS = self.FITNESS - 20
                 quitGame = True
-            elif self.SCORE < -50:
+            elif self.FITNESS < -50:
                 self.STATE = "DEAD"
                 quitGame = True
             elif self.STATE == "ALIVE":
@@ -121,7 +131,8 @@ class Game:
                 self.FOOD, self.GRID, self.STATE, got_food = self.SNAKE.move(self.FOOD, self.GRID)
                 new_position = self.SNAKE.blobs[0]
                 if got_food:
-                    self.SCORE = self.SCORE + 30
+                    self.FITNESS = self.FITNESS + 30
+                    self.FOODS_EATEN = self.FOODS_EATEN + 1
                 #self.SCORE = self.SCORE - 1
                 #self.SCORE = self.SCORE - 30
                 if True and self.FOOD is not None:
@@ -129,12 +140,12 @@ class Game:
                         if towards_food_streak <= 0:
                             towards_food_streak = 1
                         else: towards_food_streak = towards_food_streak + 1
-                        self.SCORE = self.SCORE + 1.00 * 1.0
+                        self.FITNESS = self.FITNESS + 1.00 * 1.0
                     else:
                         if towards_food_streak >= 0:
                             towards_food_streak = -1
                         else: towards_food_streak = towards_food_streak - 1
-                        self.SCORE = self.SCORE + 1.50 * -1.0
+                        self.FITNESS = self.FITNESS + 1.50 * -1.0
 
             # for i in range(self.SCREEN_DIMS[0]):
             #     for j in range(self.SCREEN_DIMS[1]):
@@ -146,4 +157,4 @@ class Game:
 
         #print('Score: %d' % self.SCORE)
         # pygame.quit()
-        return self.SCORE
+        return self.FITNESS, self.FOODS_EATEN

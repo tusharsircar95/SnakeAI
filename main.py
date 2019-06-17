@@ -3,7 +3,7 @@ import numpy as np
 from pyeasyga import pyeasyga
 import random
 from SnakeAI.Game import Game
-
+from SnakeAI.GeneticNN import GeneticNN
 
 def sample_controller(snake,food,grid):
     options = ['U','D','L','R']
@@ -132,9 +132,12 @@ def to_features_2(snake,food,grid):
 # FOOD GIVES +30, DEATH GIVES -20, NEGATIVE CAP -50
 # POP_SIZE 60, GENS 100 MP 0.05
 
-game = Game(SCREEN_DIMS=(20,20),auto_start=True)
-
-gnn = GeneticNN(game=game,layers=[16,8,4],to_features=to_features_2,generations=100,population_size=2000,
+np.random.seed(100000)
+game = Game(PLAYAREA_DIMS=(20,20),BORDER_DIMS=(1,3,1,1),
+            n_obstacles=20,
+            auto_start=True)
+#game.play("ASDASDS")
+gnn = GeneticNN(game=game,layers=[6,3],to_features=to_features_1,generations=100,population_size=2000,
                 mutation_probability=0.05,
                 crossover_probability=0.80,
                 elite_parents=20)
