@@ -6,7 +6,8 @@ class Snake:
         for i in range(4):
             self.blobs.append((origin-i,origin))
         self.trail = None
-
+        self.remaining_moves = 200
+        self.total_moves = 0
     def updateGrid(self, grid):
         for blob in self.blobs:
             grid[blob[0],blob[1]] = 1
@@ -19,6 +20,7 @@ class Snake:
 
     def grow( self ):
         self.blobs.append(self.trail)
+        self.remaining_moves = self.remaining_moves + 100
 
     def didCollide( self, headBlob, grid ):
         if headBlob[0] < 0 or headBlob[0] >= grid.shape[0]:
@@ -44,6 +46,8 @@ class Snake:
 
         if not self.didCollide(headBlob, grid):
             self.followUp ()
+            self.remaining_moves = self.remaining_moves - 1
+            self.total_moves = min(self.total_moves + 1,500)
             self.blobs[ 0 ] = headBlob
 
             grid[ self.trail[ 0 ] ][ self.trail[ 1 ] ] = 0

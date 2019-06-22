@@ -41,8 +41,11 @@ class Renderer:
 
     def render_snake ( self, screen , snake ):
         for index,blob in enumerate(snake.blobs):
+            if index != 0:
+                color = (np.random.random () * 255 , np.random.random () * 255 , np.random.random () * 255)
+            else: color = (255,255,255)
             pygame.draw.rect ( screen ,
-                               (np.random.random () * 255 , np.random.random () * 255 , np.random.random () * 255) ,
+                               color,
                                pygame.Rect ( (self.BORDERS[0] +blob[ 0 ]) * self.GRID_SQ , (self.BORDERS[1]+blob[ 1 ]) * self.GRID_SQ ,
                                              self.GRID_SQ , self.GRID_SQ ) )
 
@@ -62,15 +65,11 @@ class Renderer:
         screen.blit ( text ,
                       ( (self.SCREEN_DIMS[ 0 ] * self.GRID_SQ / 2 - text.get_width () // 2) ,
                         (self.SCREEN_DIMS[ 1 ] * self.GRID_SQ/ 2 - text.get_height ()) ))
-    def render_score(self, screen, fitness, points):
-        text_fitness = self.FONT.render ( "Fitness: " + str(fitness) , True , (0 , 255 , 0) )
-        screen.blit ( text_fitness ,
-                      ((0.75*self.SCREEN_DIMS[ 0 ] * self.GRID_SQ - text_fitness.get_width () // 2) ,
-                       (1.5 * self.GRID_SQ - text_fitness.get_height ())) )
+    def render_score(self, screen, points):
         text_points = self.FONT.render("Points: " + str(points), True, (0, 255, 0))
         screen.blit(text_points,
                     ((0.75 * self.SCREEN_DIMS[0] * self.GRID_SQ - text_points.get_width() // 2),
-                     (2.5 * self.GRID_SQ - text_points.get_height())))
+                     (1.5 * self.GRID_SQ - text_points.get_height())))
 
     def render_gnn_info(self, screen, gnn_info):
         if len(gnn_info.keys()) < 4:
