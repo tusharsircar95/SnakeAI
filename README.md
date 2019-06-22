@@ -77,9 +77,9 @@ With <crossover_probability>, each weight is set to be the corresponding weight 
 #### MUTATION (Of an individual)
 With <mutation_probability>, each weight is set to be new random number
 
-### USAGE
+## USAGE
 
-#### Creating A Game Object
+### Creating A Game Object
 
 ```
 game = Game( PLAYAREA_DIMS=(12,12),
@@ -103,7 +103,7 @@ game.play()
 
 Note that position of the snake or food object are all defined in terms of PLAY_AREA_DIMS and not the actual pixel co-ordinates of the game window
 
-#### Creating A Genetic Algorithm Object
+### Creating A Genetic Algorithm Object
 
 ```
 ga = GeneticAlgorithm(game,
@@ -138,7 +138,7 @@ print(game.play())
   <li><b>elite_parents:</b> Number of top individuals that are retained for the next generation</li>
 </ul>
 
-#### Defining Your Custom Controller & Fitness Criteria
+### Defining Your Custom Controller & Fitness Criteria
 
 ```
 # Takes as input information about the grid area (where obstacles are present), snake object and food object
@@ -163,7 +163,7 @@ I was able to get this to work but was only able to learn a simple function that
 
 Probably, bigger population size and generations would have helped.
 
-### References
+## References
 <ol>
   <li><a href="https://www.geeksforgeeks.org/genetic-algorithms/">GeeksForGeeks</a></li>
   <li><a href="https://github.com/han-gyeol/Genetic-Algorithm-Snake">Genetic Algorithm Snake</a></li>
