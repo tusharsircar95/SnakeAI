@@ -1,9 +1,8 @@
 # Snake.AI
 
-From scratch implementation of genetic algorithm to play the game of snake
+From scratch implementation of genetic algorithm to play the game of snake.
 The game interface has been developed in PyGame.
 
-## Implementation Details
 
 ### The Game
 The snake has to move through the allotted area without colliding with obstacles, walls or itself.
@@ -11,6 +10,20 @@ Eating food (white squares) fetches points and makes the snake grow bigger.
 Aim is to collect as many points as possible.
 The snake can move in 4 directions: U (UP), D (DOWN), L (LEFT), R (RIGHT)
 
+The following results were achieved by training 10 generations with population size of 30, cross_over probability set to 0.50 , mutation probability set to 0.05 and elite parents set to 10
+
+
+<table>
+  <tr>
+    <th>BEST INDIVIDUAL GAMEPLAY</th>
+    <th>Mean Generation Fitness VS Generation Number</th>
+  <tr>
+    <td><img src="https://github.com/tusharsircar95/SnakeAI/blob/master/images/best_individual_gameplay.gif" width="400px"/></td>
+    <td><img src="https://github.com/tusharsircar95/SnakeAI/blob/master/images/mean_fitness_plot.png" width="400px"/></td>
+  </tr>
+</table>
+
+## IMPLEMENTATION DETAILS
 
 ### Decision Making
 At each step, the snake has 3 possible directions it can choose from:
