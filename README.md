@@ -35,6 +35,7 @@ w<sub>4</sub> * (Does the snake collide with an obstacle)
 
 The snake selects the direction which maximises a heuristic function.
 The weights w<sub>i</sub> are selected using genetic algorithm.
+Note that each of these values normalized to (0,1) or (-1,1) for uniformity across PLAYAREA_DIMS.
 
 ### Genetic Algorithm
 
@@ -142,3 +143,15 @@ The following are useful information that can be utilized to define the controll
 </ul>
 
 
+##### NOTE:
+One alternate way to formulate the problem was as follows. At each step, based on position of snake, food and obstacles, features are extracted and passed to a neural network / logistic regression function. The function outputs the direction where the snake should move. Weights of the network could be trained by GA.
+
+I was able to get this to work but was only able to learn a simple function that moves towards the food but avoids an obstacle if it is in front of it. This works to some extent but obviously fails in the long run as it ends up getting into dead ends.
+
+Probably, bigger population size and generations would have helped.
+
+### References
+<ol>
+  <li><a href="https://www.geeksforgeeks.org/genetic-algorithms/">GeeksForGeeks</a></li>
+  <li><a href="https://github.com/han-gyeol/Genetic-Algorithm-Snake">Genetic Algorithm Snake</a></li>
+</ol>
