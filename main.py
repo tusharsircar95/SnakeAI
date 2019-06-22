@@ -17,14 +17,24 @@ ga = GeneticAlgorithm(game=game,n_weights=4,generations=10,population_size=30,
                 elite_parents=10)
 ga.run()
 
-best_individual = gnn.best_individual
+best_individual = ga.best_individual
 print(best_individual)
 
 # np.save('best_individual.npy',best_individual)
-best_individual = np.load('best_individual.npy')
+best_individual = np.load('SnakeAI/best_individual.npy')
 
 game.auto_start = False
 game.n_obstacles = 0
 game.set_controller(ga.convert_individual_to_game_controller(best_individual))
 print(game.play())
 
+
+# Convert To GIF
+import imageio
+images = []
+for n in range(91,809):
+    str_num = "000" + str(n)
+    file_name = "image" + str_num[-4:] + ".jpg"
+    file_name = "SnakeAI/images/pygame_video/" + file_name
+    images.append(imageio.imread(file_name))
+imageio.mimsave('SnakeAI/images/movie.gif', images,duration=0.05)
