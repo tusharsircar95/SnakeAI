@@ -138,6 +138,8 @@ print(game.play())
   <li><b>elite_parents:</b> Number of top individuals that are retained for the next generation</li>
 </ul>
 
+Within the GeneticAlgorithm object, `create_individual()`, `cross_over()`, `mutate()` and `calculate_fitness()` can be defined along with logic to convert individual to a game controller in `convert_individual_to_game_controller()`.
+
 ### Defining Your Custom Controller & Fitness Criteria
 
 ```
