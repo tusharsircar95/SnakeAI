@@ -32,9 +32,9 @@ print(game.play())
 # Convert To GIF
 import imageio
 images = []
-for n in range(91,809):
+for n in range(82,979):
     str_num = "000" + str(n)
     file_name = "image" + str_num[-4:] + ".jpg"
     file_name = "SnakeAI/images/pygame_video/" + file_name
     images.append(imageio.imread(file_name))
-imageio.mimsave('SnakeAI/images/movie.gif', images,duration=0.05)
+imageio.mimsave('SnakeAI/images/movie_bw.gif', images,duration=0.05)

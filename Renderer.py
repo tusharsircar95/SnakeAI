@@ -41,13 +41,17 @@ class Renderer:
 
     def render_snake ( self, screen , snake ):
         for index,blob in enumerate(snake.blobs):
-            if index != 0:
-                color = (np.random.random () * 255 , np.random.random () * 255 , np.random.random () * 255)
-            else: color = (255,255,255)
+
             pygame.draw.rect ( screen ,
-                               color,
+                               (255,255,255),
                                pygame.Rect ( (self.BORDERS[0] +blob[ 0 ]) * self.GRID_SQ , (self.BORDERS[1]+blob[ 1 ]) * self.GRID_SQ ,
                                              self.GRID_SQ , self.GRID_SQ ) )
+            if index != 0:
+                pygame.draw.rect(screen,
+                                 (0,0,0),
+                                 pygame.Rect((self.BORDERS[0] + blob[0] + 0.20) * self.GRID_SQ,
+                                             (self.BORDERS[1] + blob[1] + 0.20) * self.GRID_SQ,
+                                             0.60*self.GRID_SQ, 0.60*self.GRID_SQ))
 
     def render_food ( self, screen , food ):
         if food is None:

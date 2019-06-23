@@ -55,7 +55,7 @@ class Game:
 
     def play(self,gnn_info={}):
         self.reset_game()
-        # _image_num = 0
+        _image_num = 0
 
         self.gnn_info = gnn_info
         renderer = Renderer(SCREEN_DIMS=self.SCREEN_DIMS,
@@ -74,10 +74,10 @@ class Game:
         towards_food_streak = 0
         while not quitGame:
 
-            # str_num = "000" + str(_image_num)
-            # file_name = "image" + str_num[-4:] + ".jpg"
-            # pygame.image.save(screen, "SnakeAI/images/pygame_video/" + file_name)
-            # _image_num += 1
+            str_num = "000" + str(_image_num)
+            file_name = "image" + str_num[-4:] + ".jpg"
+            pygame.image.save(screen, "SnakeAI/images/pygame_video/" + file_name)
+            _image_num += 1
 
 
             events = pygame.event.get()
