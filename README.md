@@ -18,7 +18,7 @@ The following results were achieved by training 10 generations with population s
     <th>BEST INDIVIDUAL GAMEPLAY</th>
     <th>Mean Generation Fitness VS Generation Number</th>
   <tr>
-    <td><img src="https://github.com/tusharsircar95/SnakeAI/blob/master/images/best_individual_gameplay.gif" width="400px"/></td>
+    <td><img src="https://github.com/tusharsircar95/SnakeAI/blob/master/images/best_individual_gameplay_bw.gif" width="400px"/></td>
     <td><img src="https://github.com/tusharsircar95/SnakeAI/blob/master/images/mean_fitness_plot.png" width="400px"/></td>
   </tr>
 </table>
